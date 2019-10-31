@@ -3,7 +3,7 @@ import { UserSchema } from './user'
 
 const TokenSchema = mongoose.Schema({
     token: { type: String, required: true, index: true },
-    expiredIn: Number,
+    expiredIn: Date,
     user: { type: UserSchema, excludeIndexes: true }
 })
 

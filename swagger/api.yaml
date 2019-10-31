@@ -1,8 +1,8 @@
 openapi: 3.0.0
 info:
-  description: "Test swagger specification"
+  description: "Desa backend API documentation"
   version: "0.0.1"
-  title: "Test swagger specification"
+  title: "Desa backend API"
   contact:
     email: "apin.klas@gmail.com"
   
@@ -17,7 +17,7 @@ servers:
   - url: http://localhost:6001/
     description: Localhost (uses test data)
   - url: https://desaapi.lekapin.com/
-    description: Production
+    description: Production-Test
 
 paths:
   /auth:

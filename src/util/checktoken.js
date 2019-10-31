@@ -1,7 +1,7 @@
 import { TokenModel } from '../model/token';
 
 const checkauth = (req, rep, next) => {
-    const except = ['/auth', '/api', '/public'];
+    const except = ['/auth', '/doc', '/public'];
     for (let i = 0; i < except.length; i++) {
         if (req.raw.url.startsWith(except[i])) {
             next();

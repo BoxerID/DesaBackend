@@ -1,8 +1,6 @@
-import fp from 'fastify-plugin';
-import mongoose from 'mongoose';
-import { TokenModel } from './model/token';
-import { UserModel } from './model/user';
-import md5 from 'md5';
+import fp from 'fastify-plugin'
+import mongoose from 'mongoose'
+import migration from './migration'
 
 const db = async (fast, opt, next) => {
     fast.log.info(`connecting to mongo ${process.env.MONGO_URL}`);
@@ -17,11 +15,7 @@ const db = async (fast, opt, next) => {
         fast.log.info('closing database connection')
         mongoose.disconnect();
     })
-    //migration
-    let migration = await mongoose.connection.db.collection('migration').findOne({ '_id': 'MIGRATION' })
-    if (migration == null)
-        console.log('ASD');
-    //await TokenModel.createIndexes()
+    await migration(1)
     await next();
 }
 
