@@ -1,0 +1,25 @@
+openapi: 3.0.0
+info:
+  description: "Test swagger specification"
+  version: "0.0.1"
+  title: "Test swagger specification"
+  contact:
+    email: "apin.klas@gmail.com"
+  
+components:
+  securitySchemes:
+    token:
+      type: apiKey
+      in: header
+      name: X-API-KEY
+
+servers:
+  - url: http://localhost:6001/
+    description: Localhost (uses test data)
+  - url: https://desaapi.lekapin.com/
+    description: Production
+
+paths:
+  /auth:
+    $ref: auth/login.yaml
+    
