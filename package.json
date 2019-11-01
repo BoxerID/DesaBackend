@@ -12,6 +12,8 @@
   "author": "apin.klas@gmail.com",
   "license": "ISC",
   "dependencies": {
+    "@babel/plugin-transform-runtime": "^7.6.2",
+    "@babel/runtime": "^7.6.3",
     "atob": "^2.1.2",
     "babel-polyfill": "^6.26.0",
     "big.js": "^5.2.2",
