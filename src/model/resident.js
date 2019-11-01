@@ -28,7 +28,19 @@ const BirthHelperSchema = mongoose.Schema({
     name: { type: String, required: true },
 }, { minimize: false, timestamps: true })
 
+const EducationSchema = mongoose.Schema({
+    name: { type: String, required: true },
+}, { minimize: false, timestamps: true })
+
+const JobSchema = mongoose.Schema({
+    name: { type: String, required: true },
+}, { minimize: false, timestamps: true })
+
 const BloodTypeSchema = mongoose.Schema({
+    name: { type: String, required: true },
+}, { minimize: false, timestamps: true })
+
+const DisablitySchema = mongoose.Schema({
     name: { type: String, required: true },
 }, { minimize: false, timestamps: true })
 
@@ -72,6 +84,10 @@ const ResidentSchema = mongoose.Schema({
     birthWeight: { type: Number, default: null },
     birthLength: { type: Number, default: null },
 
+    educationKK: { type: EducationSchema, default: null },
+    educationOnProgress: { type: EducationSchema, default: null },
+    job: { type: JobSchema, default: null },
+
     citizen: { type: String, enum: ['wni', 'wna', 'double'], default: null },
     pasporNumber: { type: String, default: '' },
     pasporExpired: { type: Date, default: null },
@@ -92,8 +108,8 @@ const ResidentSchema = mongoose.Schema({
     divorceDate: { type: Date, default: null },
 
     bloodType: { type: BloodTypeSchema, default: null },
-    disablity: { type: BloodTypeSchema, default: null },
-    chronicPain: { type: ChronicPainSchema, default: null },
+    disablity: { type: [DisablitySchema], default: null },
+    chronicPain: { type: [ChronicPainSchema], default: null },
     akseptorKB: { type: AksptorKBScheme, default: null },
     insurance: { type: InsuranceScheme, default: null },
     insuranceNumber: { type: String, default: null },
@@ -112,9 +128,13 @@ const FamilyPositionModel = mongoose.model('familyposition', FamilyPositionSchem
 const BirthLocationModel = mongoose.model('birthlocation', BirthLocationSchema, 'birthlocation')
 const BirthTypeModel = mongoose.model('birthtype', BirthTypeSchema, 'birthtype')
 const BirthHelperModel = mongoose.model('birthhelper', BirthHelperSchema, 'birthhelper')
+const EducationModel = mongoose.model('education', EducationSchema, 'education')
+const JobModel = mongoose.model('job', JobSchema, 'job')
 const AkseptorKBModel = mongoose.model('akseptorkp', AksptorKBScheme, 'akseptorkp')
+const BloodTypeModel = mongoose.model('bloodtype', BloodTypeSchema, 'bloodtype')
 const ChronicPainModel = mongoose.model('chronicpain', ChronicPainSchema, 'chronicpain')
 const InsuranceModel = mongoose.model('insurance', InsuranceScheme, 'insurance')
+const DisabilityModel = mongoose.model('disability', DisablitySchema, 'disability')
 
 export {
     ResidentModel, ResidentSchema,
@@ -122,8 +142,12 @@ export {
     BirthLocationModel, BirthLocationSchema,
     BirthTypeModel, BirthTypeSchema,
     BirthHelperModel, BirthHelperSchema,
+    EducationModel, EducationSchema,
+    JobModel, JobSchema,
     ChronicPainModel, ChronicPainSchema,
     AkseptorKBModel, AksptorKBScheme,
     InsuranceModel, InsuranceScheme,
     FamilyPositionModel, FamilyPositionSchema,
+    BloodTypeModel, BloodTypeSchema,
+    DisabilityModel, DisablitySchema,
 }

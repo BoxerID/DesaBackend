@@ -15,7 +15,7 @@ const db = async (fast, opt, next) => {
         fast.log.info('closing database connection')
         mongoose.disconnect();
     })
-    await migration(1)
+    await migration(2)
     await next();
 }
 
