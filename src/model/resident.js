@@ -113,6 +113,7 @@ const BirthLocationModel = mongoose.model('birthlocation', BirthLocationSchema, 
 const BirthTypeModel = mongoose.model('birthtype', BirthTypeSchema, 'birthtype')
 const BirthHelperModel = mongoose.model('birthhelper', BirthHelperSchema, 'birthhelper')
 const AkseptorKBModel = mongoose.model('akseptorkp', AksptorKBScheme, 'akseptorkp')
+const ChronicPainModel = mongoose.model('chronicpain', ChronicPainSchema, 'chronicpain')
 const InsuranceModel = mongoose.model('insurance', InsuranceScheme, 'insurance')
 
 export {
