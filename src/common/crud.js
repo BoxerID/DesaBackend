@@ -1,9 +1,21 @@
 import atob from 'atob'
+import { ADMINISTRATOR } from './permission'
+import _ from 'lodash'
 
 class Crud {
-    constructor(fast, key, model) {
+    /*
+    opts: {
+        'INSERT': {permissions: [], skip: true},
+        'UPDATE': {permissions: [], skip: true},
+        'DEL': {permissions: [], skip: true},
+        'GET': {permissions: [], skip: true},
+        'QUERY': {permissions: [], skip: true},
+    }
+    */
+    constructor(fast, key, model, opts = {}) {
         this.key = key
         this.model = model
+        this.options = opts
         this.setup(fast)
     }
 
@@ -32,29 +44,69 @@ class Crud {
         return s
     }
 
-    insert(req, rep) {
-        this.model.create({ ...req.body }).then(v => {
+    _isSkip(key) {
+        if (this.options[key] && this.options[key]['skip'] === true) return true;
+        return false
+    }
+
+    _hasPermission(req, key) {
+        const user = req.user;
+        if (user.permissions.indexOf(ADMINISTRATOR) >= 0) return true;
+        if (this.options[key] && this.options[key]['permissions']) {
+            const val = this.options[key]['permissions'];
+            if (Array.isArray(val)) {
+                console.log(val)
+                _.each(val, v => {
+                    if (user.permissions.indexOf(v) >= 0) return true;
+                })
+                throw "You don't have permission"
+            } else if (_.isString(val)) {
+                if (user.permissions.indexOf(val) < 0)
+                    throw "You don't have permission"
+            }
+        }
+        return true;
+    }
+
+    async insert(req, rep) {
+        try {
+            this._hasPermission(req, 'INSERT');
+            const v = await this.model.create({ ...req.body })
             rep.send(v);
-        }).catch(err => rep.code(400).send({ error: err.errors }));
+        } catch (err) {
+            rep.code(400).send({ error: _.isString(err) ? err : err.errors })
+        }
     }
 
     update(req, rep) {
-        this.model.updateOne({ _id: req.params.id }, { name: req.body.name }).then(v => {
+        try {
+            this._hasPermission(req, 'UPDATE');
+            const v = this.model.updateOne({ _id: req.params.id }, { name: req.body.name })
             rep.send(v);
-        }).catch(err => rep.code(400).send({ error: err.errors }))
+        } catch (err) {
+            rep.code(400).send({ error: _.isString(err) ? err : err.errors })
+        }
     }
 
     del(req, rep) {
-        this.model.deleteOne({ _id: req.params.id }).then(v => {
+        try {
+            this._hasPermission(req, 'DEL');
+            const v = this.model.deleteOne({ _id: req.params.id })
             rep.send(v);
-        }).catch(err => rep.code(400).send({ error: err.errors }))
+        } catch (err) {
+            rep.code(400).send({ error: _.isString(err) ? err : err.errors })
+        }
     }
 
     get(req, rep) {
-        this.model.findById(req.params.id).then(v => {
+        try {
+            this._hasPermission(req, 'GET');
+            const v = this.model.findById(req.params.id)
             if (v) rep.send(v)
             else rep.code(400).send({ error: 'Record not found' })
-        }).catch(err => rep.code(400).send({ error: err.errors || err }))
+        } catch (err) {
+            rep.code(400).send({ error: _.isString(err) ? err : err.errors })
+        }
     }
 
     async query(req, rep) {
@@ -62,6 +114,7 @@ class Crud {
         //console.log(this._buildSort(req.query.sort));
         const sort = req.query.sort ? this._buildSort(req.query.sort) : {}
         try {
+            this._hasPermission(req, 'QUERY');
             const count = await this.model.find(filter).countDocuments();
             const data = await this.model.find(filter).
                 limit(req.query.limit ? parseInt(req.query.limit) : 100).
@@ -69,20 +122,17 @@ class Crud {
                 sort(sort);
             rep.send({ data: data, total: count })
         } catch (e) {
-            rep.code(400).send({ error: e.errors || e.error || e.errmsg })
+            rep.code(400).send({ error: _.isString(e) ? e : e.errors || e.error || e.errmsg })
         }
     }
 
     setup(fast) {
-        fast.post(`/${this.key}`, this.insert.bind(this))
-        fast.put(`/${this.key}/:id`, this.update.bind(this))
-        fast.delete(`/${this.key}/:id`, this.del.bind(this))
-        fast.get(`/${this.key}/:id`, this.get.bind(this))
-        fast.get(`/${this.key}`, this.query.bind(this))
-        this.nextSetup(fast)
+        if (!this._isSkip('INSERT')) fast.post(`/${this.key}`, this.insert.bind(this))
+        if (!this._isSkip('UPDATE')) fast.put(`/${this.key}/:id`, this.update.bind(this))
+        if (!this._isSkip('DEL')) fast.delete(`/${this.key}/:id`, this.del.bind(this))
+        if (!this._isSkip('GET')) fast.get(`/${this.key}/:id`, this.get.bind(this))
+        if (!this._isSkip('QUERY')) fast.get(`/${this.key}`, this.query.bind(this))
     }
-
-    nextSetup(fast) { }
 }
 
 export default Crud

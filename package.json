@@ -4,7 +4,7 @@
   "description": "Boxer Desa Backend",
   "main": "src/main.js",
   "scripts": {
-    "start": "nodemon --exec babel-node src/main.js",
+    "start": "NODE_ENV=dev nodemon --exec babel-node src/main.js",
     "debug": "nodemon --exec babel-node debug src/main.js",
     "build": "babel src --out-dir dist --source-maps",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -26,6 +26,7 @@
     "fastify-multipart": "^0.8.1",
     "fastify-static": "^2.5.0",
     "fastify-swagger": "^2.3.2",
+    "lodash": "^4.17.15",
     "md5": "^2.2.1",
     "mongoose": "^5.7.7",
     "mongoose-bignumber": "^1.2.0",

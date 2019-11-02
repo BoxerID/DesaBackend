@@ -7,8 +7,15 @@ import compress from 'fastify-compress';
 import multipart from 'fastify-multipart';
 import staticserve from 'fastify-static';
 import { PublicPath } from './pathutil';
+import path from 'path'
 
-denv.config();
+if (process.env.NODE_ENV === 'dev')
+    denv.config({ path: path.join(__dirname, '../.env') });
+else
+    denv.config({ path: path.join(__dirname, '.env') });
+
+console.log(process.env.NODE_ENV)
+console.log(path.join(__dirname, '../.env'))
 const f = fastify({ logger: true })
 
 f.register(swagger, {

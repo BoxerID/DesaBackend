@@ -1,0 +1,9 @@
+get:
+  description: API untuk list agama
+  tags:
+    - Resident
+  security:
+  - token: []
+  responses:
+    200:
+      description: 'API untuk list agama'

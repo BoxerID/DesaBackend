@@ -22,4 +22,6 @@ servers:
 paths:
   /auth:
     $ref: auth/login.yaml
+  /religion:
+    $ref: resident/religion_query.yaml
     

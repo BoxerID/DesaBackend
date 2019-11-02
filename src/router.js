@@ -1,5 +1,5 @@
 import fp from 'fastify-plugin';
-import checkauth from './util/checktoken';
+import checkauth from './common/checktoken';
 import autoLoad from 'fastify-autoload';
 import path from 'path'
 
