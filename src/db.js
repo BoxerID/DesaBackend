@@ -3,9 +3,10 @@ import mongoose from 'mongoose'
 import migration from './migration'
 
 const db = async (fast, opt, next) => {
-    fast.log.info(`connecting to mongo ${process.env.MONGO_URL}`);
+    const mongoUrl = process.env.MONGO_URL || 'mongodb://localhost:27017/desa'
+    fast.log.info(`connecting to mongo ${mongoUrl}`);
     try {
-        await mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, autoIndex: true });
+        await mongoose.connect(mongoUrl, { useNewUrlParser: true, autoIndex: true });
         mongoose.set('debug', true);
     } catch (err) {
         next(new Error(err))

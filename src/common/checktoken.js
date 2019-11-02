@@ -23,7 +23,7 @@ const checkauth = (req, rep, next) => {
                 CountyModel.findOne({ 'domain': req.hostname }).then(county => {
                     if (county) {
                         req.county = county
-                        if (res.user.permissions.indexOf('ngadimin') < 0 && res.user.hasCounty(county)) {
+                        if (res.user.permissions.indexOf('ngadimin') < 0 && !res.user.hasCounty(county)) {
                             rep.code(401).send({ error: "You don't have access" })
                         }
                     }

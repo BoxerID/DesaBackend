@@ -39,7 +39,7 @@ f.register(router)
 
 const start = async () => {
     try {
-        await f.listen(process.env.PORT, '0.0.0.0');
+        await f.listen(process.env.PORT || 6001, '0.0.0.0');
         f.log.info(`Server is listening at ${f.server.address().port}`);
     } catch (err) {
         f.log.error(err);

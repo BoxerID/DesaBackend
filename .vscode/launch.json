@@ -8,16 +8,20 @@
             "type": "node",
             "request": "launch",
             "name": "nodemon",
-            "runtimeExecutable": "npm",
-            "program": "${workspaceFolder}/src/main.js",
+            "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/nodemon",
+            "args": [
+                "${workspaceFolder}/src/main.js"
+            ],
             "restart": true,
             "protocol": "inspector",
             "stopOnEntry": false,
+            "diagnosticLogging": true,
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen",
             "runtimeArgs": [
-                "run", 
-                "start"
+                "--nolazy",
+                "--require",
+                "@babel/register"
             ],
             "sourceMaps": true
         }

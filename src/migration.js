@@ -29,7 +29,7 @@ const singleMigration = async (version) => {
             kecamatanId: kecamatan, domain: ['localhost:6001', '127.0.0.1:6001']
         })
         await UserModel.create({ username: 'admin', password: md5('mypass123'), name: 'Administrator', permissions: ['ngadimin'] })
-        await UserModel.create({ username: 'mona', password: md5('mypass123'), name: 'Monalisa', desaId: desa.id })
+        await UserModel.create({ username: 'mona', password: md5('mypass123'), name: 'Monalisa', desaId: desa.id, countyType: 'desa' })
     } else if (version == 2) {
         await Promise.all(
             ['ISLAM', 'KRISTEN', 'KATHOLIK', 'HINDU', 'BUDHA', 'KHONGHUCU', 'KEPERCAYAAN / LAINNYA'].

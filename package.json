@@ -5,7 +5,7 @@
   "main": "src/main.js",
   "scripts": {
     "start": "NODE_ENV=dev nodemon --exec babel-node src/main.js",
-    "debug": "nodemon --exec babel-node debug src/main.js",
+    "debug": "nodemon --inspect --exec babel-node src/main.js",
     "build": "babel src --out-dir dist --source-maps",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -41,6 +41,7 @@
     "@babel/core": "^7.6.4",
     "@babel/node": "^7.6.3",
     "@babel/preset-env": "^7.6.3",
+    "@babel/register": "^7.6.2",
     "nodemon": "^1.19.4"
   }
 }
