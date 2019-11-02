@@ -10,11 +10,11 @@ const CountySchema = mongoose.Schema({
     domain: { type: [String], default: [] },
     location: { type: pointSchema, default: null },
     area: { type: polygonSchema, default: null },
-    provinsiId: { type: ObjectId, default: null, ref: 'county' },
-    kabupatenId: { type: ObjectId, default: null, ref: 'county' },
-    kecamatanId: { type: ObjectId, default: null, ref: 'county' },
-    desaId: { type: ObjectId, default: null, ref: 'county' },
-    rwId: { type: ObjectId, default: null, ref: 'county' },
+    provinsiId: { type: ObjectId, default: null, ref: 'county', index: true },
+    kabupatenId: { type: ObjectId, default: null, ref: 'county', index: true },
+    kecamatanId: { type: ObjectId, default: null, ref: 'county', index: true },
+    desaId: { type: ObjectId, default: null, ref: 'county', index: true },
+    rwId: { type: ObjectId, default: null, ref: 'county', index: true },
 }, { minimize: false, timestamps: true })
 
 const CountyModel = mongoose.model('county', CountySchema, 'county')

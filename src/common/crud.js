@@ -21,16 +21,16 @@ class Crud {
         this.setup(fast)
     }
 
+    /*
+    sample query: filter=[name;;q;;apin][score;;gt;;90]
+    */
     _buildQuery(query) {
         const re = /\[\w+;;\w+;;\w*\d*\]/g;
         const dre = /(\d{4})-(\d{2})-(\d{2})T((\d{2}):(\d{2}):(\d{2}))\.(\d{3}|\d{6})Z/;
         const all = query.match(re);
         let q = {};
-        console.log(query)
-        console.log(all)
         _.each(all, v => {
             const arr = v.substring(1, v.length - 1).split(';;')
-            console.log(arr)
             if (arr.length === 3) {
                 const key = arr[0]
                 const op = arr[1]
@@ -43,7 +43,6 @@ class Crud {
                 }
             }
         });
-        console.log(q)
         return q;
     }
 
