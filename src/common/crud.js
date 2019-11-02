@@ -2,6 +2,8 @@ import atob from 'atob'
 import { ADMINISTRATOR } from './permission'
 import _ from 'lodash'
 
+const queryMap = { eq: '$eq', gte: '$gte', gt: '$gt', lt: '$lt', lte: '$lte', ne: '$ne', in: '$in', nin: '$nin', q: '$regex' }
+
 class Crud {
     /*
     opts: {
@@ -20,15 +22,29 @@ class Crud {
     }
 
     _buildQuery(query) {
-        const re = /(\d{4})-(\d{2})-(\d{2})T((\d{2}):(\d{2}):(\d{2}))\.(\d{3}|\d{6})Z/;
-        for (var key in query) {
-            if (typeof query[key] === 'string' && re.test(query[key])) {
-                query[key] = new Date(query[key])
-            } else if (query[key] instanceof Object) {
-                query[key] = this._buildQuery(query[key])
+        const re = /\[\w+;;\w+;;\w*\d*\]/g;
+        const dre = /(\d{4})-(\d{2})-(\d{2})T((\d{2}):(\d{2}):(\d{2}))\.(\d{3}|\d{6})Z/;
+        const all = query.match(re);
+        let q = {};
+        console.log(query)
+        console.log(all)
+        _.each(all, v => {
+            const arr = v.substring(1, v.length - 1).split(';;')
+            console.log(arr)
+            if (arr.length === 3) {
+                const key = arr[0]
+                const op = arr[1]
+                let val = arr[2]
+                if (op === 'q') {
+                    q[key] = { '$regex': new RegExp(val, 'i') }
+                } else {
+                    if (dre.test(val)) val = new Date(val)
+                    q[key] = { [queryMap[op]]: val }
+                }
             }
-        }
-        return query
+        });
+        console.log(q)
+        return q;
     }
 
     _buildSort(sort) {
@@ -110,10 +126,9 @@ class Crud {
     }
 
     async query(req, rep) {
-        const filter = req.query.base64filter ? this._buildQuery(JSON.parse(atob(req.query.base64filter))) : {}
-        //console.log(this._buildSort(req.query.sort));
-        const sort = req.query.sort ? this._buildSort(req.query.sort) : {}
         try {
+            const filter = req.query.filter ? this._buildQuery(req.query.filter) : {}
+            const sort = req.query.sort ? this._buildSort(req.query.sort) : {}
             this._hasPermission(req, 'QUERY');
             const count = await this.model.find(filter).countDocuments();
             const data = await this.model.find(filter).
@@ -122,6 +137,7 @@ class Crud {
                 sort(sort);
             rep.send({ data: data, total: count })
         } catch (e) {
+            console.log(e)
             rep.code(400).send({ error: _.isString(e) ? e : e.errors || e.error || e.errmsg })
         }
     }

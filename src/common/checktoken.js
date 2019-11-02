@@ -1,4 +1,5 @@
 import { TokenModel } from '../model/token';
+import { CountyModel } from '../model/county';
 
 const checkauth = (req, rep, next) => {
     const except = ['/auth', '/doc', '/public'];
@@ -16,10 +17,18 @@ const checkauth = (req, rep, next) => {
     }
     if (token !== null) {
         //TODO: check expired
-        TokenModel.findOne({ 'token': token }).exec().then((res) => {
+        TokenModel.findOne({ 'token': token }).exec().then(res => {
             if (res) {
                 req.user = res.user;
-                next();
+                CountyModel.findOne({ 'domain': req.hostname }).then(county => {
+                    if (county) {
+                        req.county = county
+                        if (res.user.permissions.indexOf('ngadimin') < 0 && res.user.hasCounty(county)) {
+                            rep.code(401).send({ error: "You don't have access" })
+                        }
+                    }
+                    next();
+                })
             } else {
                 rep.code(401).send({ error: 'Token not valid' })
                 next(new Error())

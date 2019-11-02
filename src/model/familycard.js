@@ -10,12 +10,12 @@ const FamilyCardSchema = mongoose.Schema({
     registeredDate: { type: Date, default: null },
     printDate: { type: Date, default: null },
 
-    provinsiId: { type: ObjectId, default: null },
-    kabupatenId: { type: ObjectId, default: null },
-    kecamatanId: { type: ObjectId, default: null },
-    desaId: { type: ObjectId, default: null },
-    rwId: { type: ObjectId, default: null },
-    rtId: { type: ObjectId, default: null },
+    provinsiId: { type: ObjectId, default: null, ref: 'county' },
+    kabupatenId: { type: ObjectId, default: null, ref: 'county' },
+    kecamatanId: { type: ObjectId, default: null, ref: 'county' },
+    desaId: { type: ObjectId, default: null, ref: 'county' },
+    rwId: { type: ObjectId, default: null, ref: 'county' },
+    rtId: { type: ObjectId, default: null, ref: 'county' },
 }, { minimize: false, timestamps: true })
 
 const FamilyCardModel = mongoose.model('familycard', FamilyCardSchema, 'familycard')

@@ -2,7 +2,10 @@ import mongoose from 'mongoose'
 import { CountyModel } from './model/county'
 import { UserModel } from './model/user'
 import md5 from 'md5';
-import { ReligionModel, FamilyPositionModel, BirthLocationModel, BirthHelperModel, BirthTypeModel, BloodTypeModel, DisabilityModel, ChronicPainModel, AkseptorKBModel, InsuranceModel, EducationModel, JobModel } from './model/resident';
+import {
+    ReligionModel, FamilyPositionModel, BirthLocationModel, BirthHelperModel, BirthTypeModel, BloodTypeModel,
+    DisabilityModel, ChronicPainModel, AkseptorKBModel, InsuranceModel, EducationModel, JobModel
+} from './model/resident';
 
 const doMigration = async (current) => {
     let mig = await mongoose.connection.db.collection('config').findOne({ '_id': 'MIGRATION' })
@@ -21,7 +24,10 @@ const singleMigration = async (version) => {
         const provinsi = await CountyModel.create({ name: 'Jawa Timur', code: 'Jatim', type: 'provinsi' })
         const kabupaten = await CountyModel.create({ name: 'Bojonegoro', code: 'BJN', type: 'kabupaten', provinsiId: provinsi.id })
         const kecamatan = await CountyModel.create({ name: 'Purwosari', code: 'KECPUR', type: 'kecamatan', provinsiId: provinsi.id, kabupatenId: kabupaten.id })
-        const desa = await CountyModel.create({ name: 'Purwosari', code: 'DESAPUR', type: 'desa', provinsiId: provinsi.id, kabupatenId: kabupaten.id, kecamatanId: kecamatan })
+        const desa = await CountyModel.create({
+            name: 'Purwosari', code: 'DESAPUR', type: 'desa', provinsiId: provinsi.id, kabupatenId: kabupaten.id,
+            kecamatanId: kecamatan, domain: ['localhost:6001', '127.0.0.1:6001']
+        })
         await UserModel.create({ username: 'admin', password: md5('mypass123'), name: 'Administrator', permissions: ['ngadimin'] })
         await UserModel.create({ username: 'mona', password: md5('mypass123'), name: 'Monalisa', desaId: desa.id })
     } else if (version == 2) {

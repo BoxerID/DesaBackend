@@ -1,3 +1,3 @@
-const ADMINISTRATOR = 'administrator';
+const ADMINISTRATOR = 'ngadimin';
 
 export { ADMINISTRATOR }

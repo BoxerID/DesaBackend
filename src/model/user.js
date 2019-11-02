@@ -12,17 +12,18 @@ const UserSchema = mongoose.Schema({
     phone: { type: String, default: '' },
     ableLogin: { type: Boolean, default: false },
     permissions: { type: [String], default: [] },
-    provinsiId: { type: ObjectId, default: null },
-    kabupatenId: { type: ObjectId, default: null },
-    kecamatanId: { type: ObjectId, default: null },
-    desaId: { type: ObjectId, default: null }
+    provinsiId: { type: ObjectId, default: null, ref: 'county' },
+    kabupatenId: { type: ObjectId, default: null, ref: 'county' },
+    kecamatanId: { type: ObjectId, default: null, ref: 'county' },
+    desaId: { type: ObjectId, default: null, ref: 'county' }
 }, { minimize: false, timestamps: true })
 
 //UserSchema.plugin(mongoose_delete, { deletedAt: true, indexFields: ['deleted'] })
 
-/*UserSchema.methods.testFunction = function () {
-    console.log("##########");
-}*/
+UserSchema.methods.hasCounty = function (county) {
+    //TODO: check the county
+    return true
+}
 
 const UserModel = mongoose.model('user', UserSchema, 'user')
 
