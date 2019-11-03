@@ -70,7 +70,6 @@ class Crud {
         if (this.options[key] && this.options[key]['permissions']) {
             const val = this.options[key]['permissions'];
             if (Array.isArray(val)) {
-                console.log(val)
                 _.each(val, v => {
                     if (user.permissions.indexOf(v) >= 0) return true;
                 })
@@ -96,7 +95,7 @@ class Crud {
     update(req, rep) {
         try {
             this._hasPermission(req, 'UPDATE');
-            const v = this.model.updateOne({ _id: req.params.id }, { name: req.body.name })
+            const v = this.model.updateOne({ _id: req.params.id }, { ...req.body })
             rep.send(v);
         } catch (err) {
             rep.code(400).send({ error: _.isString(err) ? err : err.errors })
@@ -136,7 +135,6 @@ class Crud {
                 sort(sort);
             rep.send({ data: data, total: count })
         } catch (e) {
-            console.log(e)
             rep.code(400).send({ error: _.isString(e) ? e : e.errors || e.error || e.errmsg })
         }
     }
