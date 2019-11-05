@@ -6,6 +6,7 @@ import swagger from 'fastify-swagger';
 import compress from 'fastify-compress';
 import multipart from 'fastify-multipart';
 import staticserve from 'fastify-static';
+import cors from 'fastify-cors';
 import { PublicPath } from './pathutil';
 import path from 'path'
 
@@ -34,6 +35,7 @@ f.register(staticserve, {
     prefix: '/public/',
     //wildcard: true,
 })
+f.register(cors)
 f.register(db)
 f.register(router)
 
