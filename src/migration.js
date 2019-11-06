@@ -26,10 +26,22 @@ const singleMigration = async (version) => {
         const kecamatan = await CountyModel.create({ name: 'Purwosari', code: 'KECPUR', type: 'kecamatan', provinsiId: provinsi.id, kabupatenId: kabupaten.id })
         const desa = await CountyModel.create({
             name: 'Purwosari', code: 'DESAPUR', type: 'desa', provinsiId: provinsi.id, kabupatenId: kabupaten.id,
-            kecamatanId: kecamatan, domain: ['localhost:6001', '127.0.0.1:6001']
+            kecamatanId: kecamatan.id, domain: ['localhost', 'purwosari']
+        })
+        const dander = await CountyModel.create({ name: 'Dander', code: 'KECDANDER', type: 'kecamatan', provinsiId: provinsi.id, kabupatenId: kabupaten.id })
+        const growok = await CountyModel.create({
+            name: 'Growok', code: 'DESAGROWOK', type: 'desa', provinsiId: provinsi.id, kabupatenId: kabupaten.id,
+            kecamatanId: dander.id, domain: ['growok']
         })
         await UserModel.create({ username: 'admin', password: md5('mypass123'), name: 'Administrator', permissions: ['ngadimin'] })
-        await UserModel.create({ username: 'mona', password: md5('mypass123'), name: 'Monalisa', desaId: desa.id, countyType: 'desa' })
+        await UserModel.create({
+            username: 'mona', password: md5('mypass123'), name: 'Monalisa', provinsiId: provinsi.id, kabupatenId: kabupaten.id,
+            kecamatanId: kecamatan.id, desaId: desa.id, countyType: 'desa'
+        })
+        await UserModel.create({
+            username: 'moni', password: md5('mypass123'), name: 'Monilasa', provinsiId: provinsi.id, kabupatenId: kabupaten.id,
+            kecamatanId: kecamatan.id, desaId: growok.id, countyType: 'desa'
+        })
     } else if (version == 2) {
         await Promise.all(
             ['ISLAM', 'KRISTEN', 'KATHOLIK', 'HINDU', 'BUDHA', 'KHONGHUCU', 'KEPERCAYAAN / LAINNYA'].

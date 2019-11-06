@@ -7,6 +7,7 @@ const queryMap = { eq: '$eq', gte: '$gte', gt: '$gt', lt: '$lt', lte: '$lte', ne
 class Crud {
     /*
     opts: {
+        useMainFilter: true,
         'INSERT': {permissions: [], skip: true},
         'UPDATE': {permissions: [], skip: true},
         'DEL': {permissions: [], skip: true},
@@ -17,7 +18,7 @@ class Crud {
     constructor(fast, key, model, opts = {}) {
         this.key = key
         this.model = model
-        this.options = opts
+        this.options = Object.assign({ useMainFilter: false }, opts)
         this.setup(fast)
     }
 
@@ -125,7 +126,8 @@ class Crud {
 
     async query(req, rep) {
         try {
-            const filter = req.query.filter ? this._buildQuery(req.query.filter) : {}
+            const reqFilter = req.query.filter ? this._buildQuery(req.query.filter) : {};
+            const filter = this.options.useMainFilter ? Object.assign(req.county.getMainFilter(), reqFilter) : reqFilter;
             const sort = req.query.sort ? this._buildSort(req.query.sort) : {}
             this._hasPermission(req, 'QUERY');
             const count = await this.model.find(filter).countDocuments();

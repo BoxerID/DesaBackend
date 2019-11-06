@@ -2,7 +2,7 @@ import { TokenModel } from '../model/token';
 import { CountyModel } from '../model/county';
 
 const checkauth = (req, rep, next) => {
-    const except = ['/auth', '/doc', '/public'];
+    const except = ['/auth', '/doc', '/public', '/exists'];
     for (let i = 0; i < except.length; i++) {
         if (req.raw.url.startsWith(except[i])) {
             next();
@@ -19,7 +19,8 @@ const checkauth = (req, rep, next) => {
         //TODO: check expired
         TokenModel.findOne({ 'token': token }).exec().then(res => {
             if (res) {
-                req.user = res.user;
+                req.user = res.user
+                req.county = res.county
                 CountyModel.findOne({ 'domain': req.hostname }).then(county => {
                     if (county) {
                         req.county = county

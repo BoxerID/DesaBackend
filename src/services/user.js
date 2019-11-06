@@ -3,7 +3,7 @@ import Crud from '../common/crud'
 
 class Service extends Crud {
     constructor(fast) {
-        super(fast, 'user', UserModel)
+        super(fast, 'user', UserModel, { useMainFilter: true })
     }
 }
 
