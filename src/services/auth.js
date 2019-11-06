@@ -15,9 +15,10 @@ const fn = async (fastify, opts) => {
             if (res) {
                 if (res.password === md5(u.password)) {
                     const county = await CountyModel.findOne({ 'domain': req.hostname.split(':')[0].split('.')[0] });
+                    const hasCounty = await res.hasCounty(county);
                     if (county === null) {
                         rep.code(400).send({ error: 'Desa domain not found' })
-                    } else if (res.permissions.indexOf('ngadimin') < 0 && !res.hasCounty(county)) {
+                    } else if (res.permissions.indexOf('ngadimin') < 0 && !hasCounty) {
                         rep.code(400).send({ error: 'User has no access to Desa' })
                     } else {
                         ret.token = randomToken(32);

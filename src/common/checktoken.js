@@ -21,10 +21,11 @@ const checkauth = (req, rep, next) => {
             if (res) {
                 req.user = res.user
                 req.county = res.county
-                CountyModel.findOne({ 'domain': req.hostname }).then(county => {
+                CountyModel.findOne({ 'domain': req.hostname }).then(async (county) => {
                     if (county) {
                         req.county = county
-                        if (res.user.permissions.indexOf('ngadimin') < 0 && !res.user.hasCounty(county)) {
+                        const hasCounty = await res.user.hasCounty(county)
+                        if (res.user.permissions.indexOf('ngadimin') < 0 && !hasCounty) {
                             rep.code(401).send({ error: "You don't have access" })
                         }
                     }
