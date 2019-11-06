@@ -25,17 +25,17 @@ const UserSchema = mongoose.Schema({
 UserSchema.methods.hasCounty = async function (county) {
     if (this.countyType === 'dusun' || this.countyType === 'rw' || this.countyType === 'rt') return false;
     if (this.countyType === 'desa' && county.type === 'desa') {
-        return county.id === this.desaId
+        return county.id.equals(this.desaId)
     } else if (this.countyType === 'kabupaten') {
         if (county.type === 'kabupaten') {
-            return county.id === this.kabupatenId
+            return county.id.equals(this.kabupatenId)
         } else if (county.type === 'desa') {
             const c = CountyModel.findOne({ kabupatenId: this.kabupatenId, desaId: county.id })
             return c !== null;
         }
     } else if (this.countyType === 'provinsi') {
         if (county.type === 'provinsi') {
-            return county.id === this.provinsiId
+            return county.id.equals(this.provinsiId)
         } else if (county.type === 'kabupaten') {
             const c = CountyModel.findOne({ provinsiId: this.provinsiId, kabupatenId: county.id })
             return c !== null;
