@@ -1,9 +1,9 @@
 import Crud from '../common/crud'
-import { ReligionModel } from '../model/resident'
+import { ResidentModel } from '../model/resident'
 
 class Service extends Crud {
     constructor(fast) {
-        super(fast, 'resident', ReligionModel)
+        super(fast, 'resident', ResidentModel)
     }
 }
 

@@ -2,7 +2,7 @@ import Crud from "../common/crud"
 import {
     ReligionModel, FamilyPositionModel, BirthLocationModel, BirthTypeModel,
     BirthHelperModel, EducationModel, JobModel, AkseptorKBModel, BloodTypeModel,
-    ChronicPainModel, InsuranceModel, DisablitySchema
+    ChronicPainModel, InsuranceModel, DisabilityModel
 } from "../model/resident"
 import { ADMINISTRATOR } from "../common/permission"
 
@@ -18,7 +18,7 @@ const fn = async (fastify, opts) => {
     new Crud(fastify, 'bloodtype', BloodTypeModel, { INSERT: { permissions: [ADMINISTRATOR] }, UPDATE: { permissions: [ADMINISTRATOR] }, DELETE: { permissions: [ADMINISTRATOR] } })
     new Crud(fastify, 'chronicpain', ChronicPainModel, { INSERT: { permissions: [ADMINISTRATOR] }, UPDATE: { permissions: [ADMINISTRATOR] }, DELETE: { permissions: [ADMINISTRATOR] } })
     new Crud(fastify, 'insurance', InsuranceModel, { INSERT: { permissions: [ADMINISTRATOR] }, UPDATE: { permissions: [ADMINISTRATOR] }, DELETE: { permissions: [ADMINISTRATOR] } })
-    new Crud(fastify, 'disability', DisablitySchema, { INSERT: { permissions: [ADMINISTRATOR] }, UPDATE: { permissions: [ADMINISTRATOR] }, DELETE: { permissions: [ADMINISTRATOR] } })
+    new Crud(fastify, 'disability', DisabilityModel, { INSERT: { permissions: [ADMINISTRATOR] }, UPDATE: { permissions: [ADMINISTRATOR] }, DELETE: { permissions: [ADMINISTRATOR] } })
 }
 
 export default fn;
