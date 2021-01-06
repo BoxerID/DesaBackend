@@ -19,7 +19,7 @@
     "big.js": "^5.2.2",
     "bignumber.js": "^9.0.0",
     "dotenv": "^7.0.0",
-    "fastify": "^2.10.0",
+    "fastify": "^2.15.1",
     "fastify-autoload": "^1.0.0",
     "fastify-compress": "^0.8.1",
     "fastify-cors": "^2.1.3",
